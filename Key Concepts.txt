@@ -3,3 +3,5 @@
     SELECT column1, column2, ...
     FROM table_name
     WHERE columnN LIKE pattern;
+    * _ wildcard represents one single characte
+    * % represents any number if characters
