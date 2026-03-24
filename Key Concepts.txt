@@ -5,3 +5,25 @@
     WHERE columnN LIKE pattern;
     * _ wildcard represents one single characte
     * % represents any number if characters
+    * We can use NOT LIKE as well
+    * for range [a-f], [acs]
+- IFNULL returns the null columns too
+
+- CASE WHEN
+    Syntax: 
+        CASE
+          WHEN condition1 THEN result1
+          WHEN condition2 THEN result2
+          WHEN conditionN THEN resultN
+          ELSE default_result
+        END;
+
+    Example:
+        SELECT ProductName, Price,
+        CASE
+          WHEN Price < 20 THEN 'Low Cost'
+          WHEN Price BETWEEN 20 AND 50 THEN 'Medium Cost'
+          ELSE 'High Cost'
+        END AS PriceCategory
+        FROM Products;
+    
