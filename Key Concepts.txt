@@ -27,5 +27,8 @@
         END AS PriceCategory
         FROM Products;
     
-- STRING_AGG ("column_name", ",") as ___;
-    To add multiple rows into a single row
+- GROUP_CONCAT(column_name SEPARATOR ',') as ___;
+    - To add multiple rows into a single row
+    - can be used as a subquery as well
+        Example:
+            GROUP_CONCAT(DISTINCT product ORDER BY product ASC SEPARATOR ',') as products
