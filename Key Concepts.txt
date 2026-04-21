@@ -27,3 +27,5 @@
         END AS PriceCategory
         FROM Products;
     
+- STRING_AGG ("column_name", ",") as ___;
+    To add multiple rows into a single row
