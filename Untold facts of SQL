@@ -1,0 +1,31 @@
+SQL queries do not execute in the order they are written, which is the most fundamental hidden reality that trips up developers and data analysts. While you write a query starting with , the database management engine actually processes the data starting with and to build the workspace first.   
+Understanding the hidden inner workings, quirky logic, and lesser-known behaviors of SQL will dramatically improve your database design and query performance.  
+1. The True Execution Order 
+The database engine evaluates operations in a hidden sequence that differs significantly from your written syntax. This is why you cannot use a column alias created in your  clause inside a  clause—the  clause is processed long before the  clause even exists. 
+
+= Written Order: SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY
+= Actual Engine Order: FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT / OFFSET
+
+2. The Tri-Value Logic of NULL 
+In standard programming, things are usually true or false. SQL uses three-valued logic: TRUE, FALSE, and UNKNOWN. 
+
+• 'NULL' represents a missing or completely unknown value, not a zero or an empty string. 
+• Because NULL is unknown, any direct comparison like WHERE column=NULL or WHERE column!=NULL  will evaluate to  and fail to return rows. 
+• You must strictly use IS NULL  or IS NOT NULL. 
+• The Trap: If a subquery returns even a single NULL value, using a WHERE id NOT IN (subquery) statement will completely break and return zero results. To bypass this, wrap denominators or parameters using the NULLIF function to cleanly turn zero-values into safe nulls.   
+
+3. Positional Sorting & Aggregation Hacks 
+You do not always have to type out long column or mathematical names inside your grouping clauses. You can reference them by their numerical position in the SELECT statement. 
+
+• Writing  tells the engine to automatically group by the first and second columns specified in your select list. 
+
+4. Constraints Silently Optimize Your Queries 
+Foreign Keys are not just for data integrity. They act as hidden performance boosters. 
+
+• If you join two massive tables together but your SELECT clause only pulls columns from the primary table, the query optimizer uses Join Elimination. 
+• Because the foreign key guarantees a matching row exists, the database engine completely removes the JOIN from the actual execution plan, saving immense amounts of memory and I/O overhead.  
+
+5. Inline Tables Without Physical Storage 
+Most developers believe they need a physical table or a Common Table Expression (CTE) to generate or reference mock data. However, you can spin up temporary datasets out of thin air using the VALUES clause as an inline table: 
+
+
